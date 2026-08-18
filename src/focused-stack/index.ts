@@ -6,6 +6,7 @@ interface HandlerObject {
   key: string;
   handler: Handler;
   shouldTriggerInInputs?: boolean;
+  ignoreRepeat?: boolean;
 }
 
 interface HandlerGroup {
@@ -99,6 +100,10 @@ export class FocusedStack {
       const isContentEditableAndShouldTrigger =
         isContentEditable && handlerObject.shouldTriggerInInputs;
 
+      if (e.repeat && handlerObject.ignoreRepeat) {
+        continue;
+      }
+
       if (!isContentEditable || isContentEditableAndShouldTrigger) {
         handlerObject.handler(e);
       }
@@ -147,6 +152,7 @@ export class FocusedStack {
         handler,
         key,
         shouldTriggerInInputs: trigger.shouldTriggerInInputs,
+        ignoreRepeat: trigger.ignoreRepeat,
       },
     ];
   };

@@ -14,6 +14,7 @@ export interface Trigger {
   key: typeof KeyboardEvent.prototype.code;
   modifiers?: Modifier[];
   shouldTriggerInInputs?: boolean;
+  ignoreRepeat?: boolean;
 }
 
 type KeyboardEventHandler = (event: KeyboardEvent) => void;
