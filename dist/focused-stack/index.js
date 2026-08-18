@@ -60,6 +60,9 @@ var FocusedStack = /** @class */ (function () {
             for (var _i = 0, handlerObjects_1 = handlerObjects; _i < handlerObjects_1.length; _i++) {
                 var handlerObject = handlerObjects_1[_i];
                 var isContentEditableAndShouldTrigger = isContentEditable && handlerObject.shouldTriggerInInputs;
+                if (e.repeat && handlerObject.ignoreRepeat) {
+                    continue;
+                }
                 if (!isContentEditable || isContentEditableAndShouldTrigger) {
                     handlerObject.handler(e);
                 }
@@ -92,6 +95,7 @@ var FocusedStack = /** @class */ (function () {
                     handler: handler,
                     key: key,
                     shouldTriggerInInputs: trigger.shouldTriggerInInputs,
+                    ignoreRepeat: trigger.ignoreRepeat,
                 },
             ], false);
         };

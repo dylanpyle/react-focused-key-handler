@@ -9,6 +9,7 @@ export interface Trigger {
     key: typeof KeyboardEvent.prototype.code;
     modifiers?: Modifier[];
     shouldTriggerInInputs?: boolean;
+    ignoreRepeat?: boolean;
 }
 declare type KeyboardEventHandler = (event: KeyboardEvent) => void;
 interface LeafProp {
