@@ -135,6 +135,28 @@ describe("Focused Handler Stack", () => {
 
     expect(mockHandler).not.toHaveBeenCalled();
   });
+  it("doesn't fire repeat events when set to ignore repeats", () => {
+    const ignoringHandler = jest.fn();
+    const repeatingHandler = jest.fn();
+    const id = FocusedKeyHandlerStack.getGroupId();
+
+    FocusedKeyHandlerStack.pushGroup(id);
+
+    FocusedKeyHandlerStack.pushHandler(id, ignoringHandler, {
+      key: "KeyT",
+      ignoreRepeat: true,
+    });
+    FocusedKeyHandlerStack.pushHandler(id, repeatingHandler, {
+      key: "KeyT",
+    });
+
+    FocusedKeyHandlerStack.fireEvent({ code: "KeyT", repeat: false } as any);
+    FocusedKeyHandlerStack.fireEvent({ code: "KeyT", repeat: true } as any);
+    FocusedKeyHandlerStack.fireEvent({ code: "KeyT", repeat: true } as any);
+
+    expect(ignoringHandler).toHaveBeenCalledTimes(1);
+    expect(repeatingHandler).toHaveBeenCalledTimes(3);
+  });
   it("doesn't fire events from any group besides the top", () => {
     const unusedHandler = jest.fn();
     const id1 = FocusedKeyHandlerStack.getGroupId();
